@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ex
+set -e
 
 VERSION='0.39.1'
 SWIFTLINT='scripts/.bin/swiftlint'
