@@ -1,0 +1,4 @@
+--stripunusedargs closure-only
+--decimalgrouping 3,5
+--fractiongrouping enabled
+--disable specifiers
