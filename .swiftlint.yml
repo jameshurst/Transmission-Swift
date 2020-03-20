@@ -2,6 +2,17 @@ included:
   - Sources
   - Tests
 
+file_name:
+  excluded:
+    - TorrentRequests.swift
+    - SessionRequests.swift
+
+identifier_name:
+  excluded:
+    - id
+
+# -- MASTER -- #
+
 analyzer_rules:
   - unused_declaration
   - unused_import
@@ -42,7 +53,6 @@ opt_in_rules:
   - last_where
   - legacy_multiple
   - legacy_random
-  - let_var_whitespace
   - literal_expression_end_indentation
   - lower_acl_than_parent
   - missing_docs
@@ -85,15 +95,6 @@ opt_in_rules:
   - vertical_whitespace_opening_braces
   - xct_specific_matcher
   - yoda_condition
-
-file_name:
-  excluded:
-    - TorrentRequests.swift
-    - SessionRequests.swift
-
-identifier_name:
-  excluded:
-    - id
 
 line_length:
   warning: 120
