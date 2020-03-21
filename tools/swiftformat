@@ -1,0 +1,9 @@
+#!/bin/bash
+
+export TOOL_NAME="swiftformat"
+export VERSION='0.44.5'
+export REPO='https://github.com/nicklockwood/SwiftFormat.git'
+export VERSION_CMD='--version'
+export PRODUCT='swiftformat'
+
+"$(dirname "$0")/swift-tool.sh" $@

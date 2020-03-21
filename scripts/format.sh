@@ -1,1 +1,1 @@
-./scripts/swiftformat.sh Sources Tests
+tools/swiftformat Sources Tests
