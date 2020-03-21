@@ -1,5 +1,19 @@
---stripunusedargs closure-only
+# fileHeader
+--header strip
+
+# numberFormatting
 --decimalgrouping 3,5
 --fractiongrouping enabled
+
+# unusedArguments
+--stripunusedargs closure-only
+
+# wrapArguments
+--wraparguments before-first
+--wrapcollections before-first
+
+# disabled
 --disable specifiers
+
+# version
 --swiftversion 5.2
