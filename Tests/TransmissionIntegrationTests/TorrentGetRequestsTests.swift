@@ -2,20 +2,7 @@ import Combine
 import Transmission
 import XCTest
 
-class TorrentGetRequestsTests: XCTestCase {
-    private var client: Transmission!
-    private var cancellables: Set<AnyCancellable>!
-
-    override func setUp() {
-        super.setUp()
-        client = Transmission(
-            baseURL: TestConfig.serverURL,
-            username: TestConfig.serverUsername,
-            password: TestConfig.serverPassword
-        )
-        cancellables = Set()
-    }
-
+class TorrentGetRequestsTests: IntegrationTestCase {
     func test_torrents() {
         let url = urlForResource(named: TestConfig.torrent1Resource)
         let expectation = self.expectation(description: #function)
@@ -51,7 +38,7 @@ class TorrentGetRequestsTests: XCTestCase {
                 }
             )
             .store(in: &cancellables)
-        waitForExpectations(timeout: 1)
+        waitForExpectations(timeout: TestConfig.timeout)
     }
 
     func test_torrentFiles() {
@@ -74,6 +61,6 @@ class TorrentGetRequestsTests: XCTestCase {
                 }
             )
             .store(in: &cancellables)
-        waitForExpectations(timeout: 1)
+        waitForExpectations(timeout: TestConfig.timeout)
     }
 }

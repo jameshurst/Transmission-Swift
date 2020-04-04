@@ -2,20 +2,7 @@ import Combine
 import Transmission
 import XCTest
 
-class SessionRequestsTests: XCTestCase {
-    private var client: Transmission!
-    private var cancellables: Set<AnyCancellable>!
-
-    override func setUp() {
-        super.setUp()
-        client = Transmission(
-            baseURL: TestConfig.serverURL,
-            username: TestConfig.serverUsername,
-            password: TestConfig.serverPassword
-        )
-        cancellables = Set()
-    }
-
+class SessionRequestsTests: IntegrationTestCase {
     func test_rpcVersion() {
         let expectation = self.expectation(description: #function)
         expectation.expectedFulfillmentCount = 2
@@ -33,6 +20,6 @@ class SessionRequestsTests: XCTestCase {
                 }
             )
             .store(in: &cancellables)
-        waitForExpectations(timeout: 1)
+        waitForExpectations(timeout: TestConfig.timeout)
     }
 }

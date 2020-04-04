@@ -22,9 +22,9 @@ docker run \
 
 sleep 5
 
-set +e
-
-swift test --filter TransmissionIntegrationTests
+swift test --filter TransmissionIntegrationTests && RC=$? || RC=$?
 
 docker container stop TransmissionIntegrationTests
 docker container rm TransmissionIntegrationTests
+
+exit $RC

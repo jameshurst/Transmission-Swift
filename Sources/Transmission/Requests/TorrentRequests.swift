@@ -39,6 +39,21 @@ public extension Request {
         .init(method: "torrent-reannounce", args: ["ids": ids])
     }
 
+    // MARK: Set Requests
+
+    /// Sets options for torrents with the given IDs and/or hashes.
+    ///
+    /// RPC Method: `torrent-set`
+    ///
+    /// - Parameters:
+    ///   - ids: The torrent IDs and/or hashes to update.
+    ///   - options: The options to set on the torrents.
+    static func setOptions(ids: [Any], options: [TorrentOption]) -> Request<Void> {
+        var args = options.reduce(into: [String: Any]()) { $0[$1.key] = $1.value }
+        args["ids"] = ids
+        return .init(method: "torrent-set", args: args)
+    }
+
     // MARK: Get Requests
 
     /// Requests the list of torrents.

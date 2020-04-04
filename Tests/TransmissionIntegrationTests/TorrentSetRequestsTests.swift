@@ -2,13 +2,18 @@ import Combine
 import Transmission
 import XCTest
 
-class TorrentActionRequestsTests: IntegrationTestCase {
-    func test_start() {
+class TorrentSetRequestsTests: IntegrationTestCase {
+    func test_filesWanted() {
         let url = urlForResource(named: TestConfig.torrent1Resource)
         let expectation = self.expectation(description: #function)
         expectation.expectedFulfillmentCount = 2
         ensureTorrentAdded(fileURL: url, to: client)
-            .flatMap { _ in self.client.request(.start(ids: [TestConfig.torrent1Hash])) }
+            .flatMap {
+                self.client.request(.setOptions(
+                    ids: [TestConfig.torrent1Hash],
+                    options: [.filesWanted(indices: [0])]
+                ))
+            }
             .sink(
                 receiveCompletion: { completion in
                     if case let .failure(error) = completion {
@@ -24,12 +29,17 @@ class TorrentActionRequestsTests: IntegrationTestCase {
         waitForExpectations(timeout: TestConfig.timeout)
     }
 
-    func test_stop() {
+    func test_filesUnwanted() {
         let url = urlForResource(named: TestConfig.torrent1Resource)
         let expectation = self.expectation(description: #function)
         expectation.expectedFulfillmentCount = 2
         ensureTorrentAdded(fileURL: url, to: client)
-            .flatMap { _ in self.client.request(.stop(ids: [TestConfig.torrent1Hash])) }
+            .flatMap {
+                self.client.request(.setOptions(
+                    ids: [TestConfig.torrent1Hash],
+                    options: [.filesUnwanted(indices: [0])]
+                ))
+            }
             .sink(
                 receiveCompletion: { completion in
                     if case let .failure(error) = completion {
@@ -45,12 +55,17 @@ class TorrentActionRequestsTests: IntegrationTestCase {
         waitForExpectations(timeout: TestConfig.timeout)
     }
 
-    func test_verify() {
+    func test_priorityLow() {
         let url = urlForResource(named: TestConfig.torrent1Resource)
         let expectation = self.expectation(description: #function)
         expectation.expectedFulfillmentCount = 2
         ensureTorrentAdded(fileURL: url, to: client)
-            .flatMap { _ in self.client.request(.verify(ids: [TestConfig.torrent1Hash])) }
+            .flatMap {
+                self.client.request(.setOptions(
+                    ids: [TestConfig.torrent1Hash],
+                    options: [.priorityLow(indices: [0])]
+                ))
+            }
             .sink(
                 receiveCompletion: { completion in
                     if case let .failure(error) = completion {
@@ -66,12 +81,43 @@ class TorrentActionRequestsTests: IntegrationTestCase {
         waitForExpectations(timeout: TestConfig.timeout)
     }
 
-    func test_reannounce() {
+    func test_priorityNormal() {
         let url = urlForResource(named: TestConfig.torrent1Resource)
         let expectation = self.expectation(description: #function)
         expectation.expectedFulfillmentCount = 2
         ensureTorrentAdded(fileURL: url, to: client)
-            .flatMap { _ in self.client.request(.reannounce(ids: [TestConfig.torrent1Hash])) }
+            .flatMap {
+                self.client.request(.setOptions(
+                    ids: [TestConfig.torrent1Hash],
+                    options: [.priorityNormal(indices: [0])]
+                ))
+            }
+            .sink(
+                receiveCompletion: { completion in
+                    if case let .failure(error) = completion {
+                        XCTFail(String(describing: error))
+                    }
+                    expectation.fulfill()
+                },
+                receiveValue: { _ in
+                    expectation.fulfill()
+                }
+            )
+            .store(in: &cancellables)
+        waitForExpectations(timeout: TestConfig.timeout)
+    }
+
+    func test_priorityHigh() {
+        let url = urlForResource(named: TestConfig.torrent1Resource)
+        let expectation = self.expectation(description: #function)
+        expectation.expectedFulfillmentCount = 2
+        ensureTorrentAdded(fileURL: url, to: client)
+            .flatMap {
+                self.client.request(.setOptions(
+                    ids: [TestConfig.torrent1Hash],
+                    options: [.priorityHigh(indices: [0])]
+                ))
+            }
             .sink(
                 receiveCompletion: { completion in
                     if case let .failure(error) = completion {
