@@ -12,5 +12,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Set Xcode version
+      run: sudo xcode-select -s /Applications/Xcode_11.4.app
     - name: Run CI script
       run: ./scripts/run_ci.sh

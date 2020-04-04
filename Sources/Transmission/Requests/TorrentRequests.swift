@@ -66,7 +66,7 @@ public extension Request {
     static func torrents(properties: [Torrent.PropertyKeys]) -> Request<[Torrent]> {
         .init(
             method: "torrent-get",
-            args: ["fields": properties.map { $0.rawValue }],
+            args: ["fields": properties.map(\.rawValue)],
             transform: { response in
                 guard let arguments = response["arguments"] as? [String: Any],
                     let torrents = arguments["torrents"] as? [[String: Any]]
