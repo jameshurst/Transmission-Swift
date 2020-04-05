@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export TOOL_NAME="swiftlint"
-export VERSION='0.39.1'
+export VERSION='0.39.2'
 export REPO='https://github.com/realm/SwiftLint.git'
 export VERSION_CMD='version'
 export PRODUCT='swiftlint'
