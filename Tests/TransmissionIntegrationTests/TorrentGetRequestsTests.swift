@@ -19,6 +19,8 @@ class TorrentGetRequestsTests: IntegrationTestCase {
                 receiveValue: { torrents in
                     let torrent = torrents.first { $0.hash == TestConfig.torrent1Hash }
                     XCTAssertNotNil(torrent?.id)
+                    XCTAssertNotNil(torrent?.bytesUnchecked)
+                    XCTAssertNotNil(torrent?.bytesValid)
                     XCTAssertNotNil(torrent?.dateAdded)
                     XCTAssertNotNil(torrent?.downloadPath)
                     XCTAssertNotNil(torrent?.downloadRate)

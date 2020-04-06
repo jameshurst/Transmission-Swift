@@ -2,6 +2,10 @@ import Foundation
 
 /// A Transmission torrent.
 public struct Torrent: Equatable {
+    /// The number of bytes of partial pieces.
+    public var bytesUnchecked: Int64?
+    /// The number of bytes of checksum verified data.
+    public var bytesValid: Int64?
     /// The date the torrent was added to the server.
     public var dateAdded: Date?
     /// The file path where the torrent data is being downloaded to.
@@ -37,6 +41,8 @@ public struct Torrent: Equatable {
 
     /// Initializes a torrent.
     public init(
+        bytesUnchecked: Int64? = nil,
+        bytesValid: Int64? = nil,
         dateAdded: Date? = nil,
         downloadPath: String? = nil,
         downloadRate: Int64? = nil,
@@ -54,6 +60,8 @@ public struct Torrent: Equatable {
         uploaded: Int64? = nil,
         uploadRate: Int64? = nil
     ) {
+        self.bytesUnchecked = bytesUnchecked
+        self.bytesValid = bytesValid
         self.dateAdded = dateAdded
         self.downloadPath = downloadPath
         self.downloadRate = downloadRate
@@ -98,6 +106,10 @@ public extension Torrent {
 public extension Torrent {
     /// The keys used to request torrent properties.
     enum PropertyKeys: String, CaseIterable {
+        /// Requests the key `haveUnchecked` from the API.
+        case bytesUnchecked = "haveUnchecked"
+        /// Requests the key `haveValid` from the API.
+        case bytesValid = "haveValid"
         /// Requests the key `addedDate` from the API.
         case dateAdded = "addedDate"
         /// Requests the key `downloadDir` from the API.
@@ -141,6 +153,8 @@ extension Torrent {
             dictionary[propertyKey.rawValue] as? Value
         }
 
+        bytesUnchecked = decode(.bytesUnchecked)
+        bytesValid = decode(.bytesValid)
         dateAdded = decode(.dateAdded).map(Date.init(timeIntervalSince1970:))
         downloadPath = decode(.downloadPath)
         downloadRate = decode(.downloadRate)
