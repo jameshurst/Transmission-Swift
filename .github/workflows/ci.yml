@@ -12,7 +12,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Cache tools
+      id: cache-tools
+      uses: actions/cache@v1
+      with:
+        path: tools/.bin
+        key: ${{ runner.os }}-tools
+
     - name: Set Xcode version
       run: sudo xcode-select -s /Applications/Xcode_11.4.app
+
     - name: Run CI script
       run: ./scripts/run_ci.sh
