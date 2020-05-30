@@ -13,7 +13,7 @@ if [ -n "$(git ls-files --others --modified --exclude-standard)" ]; then
   exit -1
 fi
 
-tools/swiftlint --strict
+tools/mint run swiftlint --strict
 
 swift package clean
 swift build

@@ -1,1 +1,1 @@
-tools/swiftformat Sources Tests
+tools/mint run swiftformat Sources Tests

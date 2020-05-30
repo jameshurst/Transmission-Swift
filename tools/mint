@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -eu
+
+REPO="https://github.com/yonaskolb/Mint.git"
+VERSION="0.14.2"
+EXECUTABLE_NAME="mint"
+
+TOOLS_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+INSTALL_PATH="$TOOLS_PATH/.bin/$EXECUTABLE_NAME/$VERSION"
+EXECUTABLE="$INSTALL_PATH/$EXECUTABLE_NAME"
+
+if [[ ! -f "$EXECUTABLE" ]]; then
+    mkdir -p "$INSTALL_PATH"
+    pushd $INSTALL_PATH
+    rm -rf src
+    git clone --depth 1 --branch "$VERSION" "$REPO" src
+
+    pushd src
+    make install INSTALL_PATH="$INSTALL_PATH"
+    popd
+
+    rm -rf src
+    popd
+fi
+
+MINT_PATH="$TOOLS_PATH/.mint" "$EXECUTABLE" $@
