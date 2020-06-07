@@ -42,41 +42,7 @@ public final class Transmission {
             .eraseToAnyPublisher()
     }
 
-    /// Creates a `URLRequest` from a `Request`.
-    /// - Parameter request: The request definition to be converted in to a `URLRequest`.
-    /// - Returns: A `Result` containing either the created `URLRequest` or an `Error` if the request was unable to be
-    /// serialized to JSON.
-    private func urlRequest<Value>(from request: Request<Value>) -> Result<URLRequest, TransmissionError> {
-        let url = baseURL.appendingPathComponent("transmission").appendingPathComponent("rpc")
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "POST"
-        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        if username != nil || password != nil {
-            let username = self.username ?? ""
-            let password = self.password ?? ""
-            if let data = "\(username):\(password)".data(using: .utf8) {
-                urlRequest.addValue("Basic \(data.base64EncodedString())", forHTTPHeaderField: "Authorization")
-            }
-        }
-
-        if let sessionID = sessionID {
-            urlRequest.addValue(sessionID, forHTTPHeaderField: Headers.sessionID)
-        }
-
-        do {
-            urlRequest.httpBody = try JSONSerialization.data(withJSONObject: [
-                "method": request.method,
-                "arguments": request.args,
-            ], options: [])
-        } catch {
-            return .failure(.encoding(error))
-        }
-
-        return .success(urlRequest)
-    }
-
-    /// Sends a `URLRequest` optionally handling the session ID.
+    /// Sends a request to the server, optionally handling the session ID.
     ///
     /// - Parameters:
     ///   - request: The request to be sent to the server.
@@ -84,7 +50,8 @@ public final class Transmission {
     ///   is invalid.
     /// - Returns: A publisher that emits the decoded server response.
     private func send<Value>(
-        request: Request<Value>, handleSessionID: Bool
+        request: Request<Value>,
+        handleSessionID: Bool
     ) -> AnyPublisher<[String: Any], TransmissionError> {
         // swiftlint:disable:next line_length
         let retryIfNeeded = { (data: Data, response: URLResponse) -> AnyPublisher<(data: Data, response: URLResponse), TransmissionError> in
@@ -118,6 +85,40 @@ public final class Transmission {
             .flatMap(retryIfNeeded)
             .flatMap(decode(data:response:))
             .eraseToAnyPublisher()
+    }
+
+    /// Creates a `URLRequest` from a `Request`.
+    /// - Parameter request: The request definition to be converted in to a `URLRequest`.
+    /// - Returns: A `Result` containing either the created `URLRequest` or an `Error` if the request was unable to be
+    /// serialized to JSON.
+    private func urlRequest<Value>(from request: Request<Value>) -> Result<URLRequest, TransmissionError> {
+        let url = baseURL.appendingPathComponent("transmission").appendingPathComponent("rpc")
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "POST"
+        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        if username != nil || password != nil {
+            let username = self.username ?? ""
+            let password = self.password ?? ""
+            if let data = "\(username):\(password)".data(using: .utf8) {
+                urlRequest.addValue("Basic \(data.base64EncodedString())", forHTTPHeaderField: "Authorization")
+            }
+        }
+
+        if let sessionID = sessionID {
+            urlRequest.addValue(sessionID, forHTTPHeaderField: Headers.sessionID)
+        }
+
+        do {
+            urlRequest.httpBody = try JSONSerialization.data(withJSONObject: [
+                "method": request.method,
+                "arguments": request.args,
+            ], options: [])
+        } catch {
+            return .failure(.encoding(error))
+        }
+
+        return .success(urlRequest)
     }
 
     /// Attempts to decode a server response in to a dictionary.
