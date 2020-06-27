@@ -2,6 +2,8 @@
 
 set -eu
 
+unset SDKROOT
+
 REPO="https://github.com/yonaskolb/Mint.git"
 VERSION="0.14.2"
 EXECUTABLE_NAME="mint"
