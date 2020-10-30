@@ -17,7 +17,7 @@ extension Tracker {
     /// - Parameter dictionary: The response dictionary for the tracker.
     init?(dictionary: [String: Any]) {
         guard let id = dictionary["id"] as? Int,
-            let host = dictionary["host"] as? String
+              let host = dictionary["host"] as? String
         else {
             return nil
         }

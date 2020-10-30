@@ -32,10 +32,10 @@ extension TorrentFile {
     ///   - stats: The file stats dictionary.
     init?(index: Int, file: [String: Any], stats: [String: Any]) {
         guard let name = file["name"] as? String,
-            let size = file["length"] as? Int64,
-            let downloaded = file["bytesCompleted"] as? Int64,
-            let priority = stats["priority"] as? Int,
-            let isWanted = stats["wanted"] as? Bool
+              let size = file["length"] as? Int64,
+              let downloaded = file["bytesCompleted"] as? Int64,
+              let priority = stats["priority"] as? Int,
+              let isWanted = stats["wanted"] as? Bool
         else {
             return nil
         }

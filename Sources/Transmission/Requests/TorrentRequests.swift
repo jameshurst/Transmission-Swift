@@ -69,7 +69,7 @@ public extension Request {
             args: ["fields": properties.map(\.rawValue)],
             transform: { response in
                 guard let arguments = response["arguments"] as? [String: Any],
-                    let torrents = arguments["torrents"] as? [[String: Any]]
+                      let torrents = arguments["torrents"] as? [[String: Any]]
                 else {
                     return .failure(.unexpectedResponse)
                 }
@@ -92,10 +92,10 @@ public extension Request {
             args: ["ids": [id], "fields": ["files", "fileStats"]],
             transform: { response -> Result<[TorrentFile], TransmissionError> in
                 guard let arguments = response["arguments"] as? [String: Any],
-                    let torrents = arguments["torrents"] as? [[String: Any]],
-                    !torrents.isEmpty,
-                    let filesDict = torrents[0]["files"] as? [[String: Any]],
-                    let statsDict = torrents[0]["fileStats"] as? [[String: Any]]
+                      let torrents = arguments["torrents"] as? [[String: Any]],
+                      !torrents.isEmpty,
+                      let filesDict = torrents[0]["files"] as? [[String: Any]],
+                      let statsDict = torrents[0]["fileStats"] as? [[String: Any]]
                 else {
                     return .failure(.unexpectedResponse)
                 }

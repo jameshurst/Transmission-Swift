@@ -66,7 +66,7 @@ public final class Transmission {
                 return Fail(error: .unauthenticated).eraseToAnyPublisher()
             case 409:
                 guard handleSessionID,
-                    let sessionID = urlResponse.allHeaderFields[Headers.sessionID] as? String
+                      let sessionID = urlResponse.allHeaderFields[Headers.sessionID] as? String
                 else {
                     return Fail(error: .noSessionID).eraseToAnyPublisher()
                 }

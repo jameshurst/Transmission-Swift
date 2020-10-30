@@ -12,7 +12,7 @@ public extension Request {
             args: ["fields": ["rpc-version"]],
             transform: { response -> Result<Int, TransmissionError> in
                 guard let arguments = response["arguments"] as? [String: Any],
-                    let version = arguments["rpc-version"] as? Int
+                      let version = arguments["rpc-version"] as? Int
                 else {
                     return .failure(.unexpectedResponse)
                 }
